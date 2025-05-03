@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Min-Max Heap Tree</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Min-Max Heap Tree</h1>
+
+  <div class="controls">
+    <input type="number" id="input" placeholder="1-100" min="1" max="100" />
+    <button onclick="insert()">Insert</button>
+    <button onclick="popMin()">Pop Min</button>
+    <button onclick="popMax()">Pop Max</button>
+  </div>
+
+  <div class="tree">
+    <svg id="connectorSVG" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none;"></svg>
+    <div id="heapDisplay" style="position:relative; z-index:1;"></div>
+  </div>  
+
+  <script src="script.js"></script>
+</body>
+</html>
