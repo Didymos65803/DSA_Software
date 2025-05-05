@@ -4,10 +4,25 @@ function insert() {
   const input = document.getElementById("input");
   const val = parseInt(input.value);
   if (isNaN(val) || val < 1 || val > 100) return;
+  if(heap.length >= 31) return;
   heap.push(val);
   bubbleUp(heap.length - 1);
   input.value = "";
   render();
+  if (heap.length >= 31) {
+    document.getElementById("insertBtn").disabled = true;
+    document.getElementById("insertBtn").style.opacity = "0.5";
+    document.getElementById("insertBtn").style.cursor = "not-allowed";
+  }if (heap.length > 0) {
+    const btn1 = document.getElementById("popMinBtn");
+    btn1.disabled = false;
+    btn1.style.opacity = "1";
+    btn1.style.cursor = "pointer";
+    const btn2 = document.getElementById("popMaxBtn");
+    btn2.disabled = false;
+    btn2.style.opacity = "1";
+    btn2.style.cursor = "pointer";
+  }
 }
 
 function bubbleUp(i) {
@@ -44,6 +59,19 @@ function popMin() {
     sinkDownMin(0);
   }
   render();
+  if (heap.length < 31) {
+    const btn = document.getElementById("insertBtn");
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.style.cursor = "pointer";
+  }if (heap.length <= 0) {
+    document.getElementById("popMinBtn").disabled = true;
+    document.getElementById("popMinBtn").style.opacity = "0.5";
+    document.getElementById("popMinBtn").style.cursor = "not-allowed";
+    document.getElementById("popMaxBtn").disabled = true;
+    document.getElementById("popMaxBtn").style.opacity = "0.5";
+    document.getElementById("popMaxBtn").style.cursor = "not-allowed";
+  }
 }
 
 function sinkDownMin(i) {
@@ -71,64 +99,92 @@ function popMax() {
   }
   heap.splice(maxIndex, 1);
   render();
+  if (heap.length < 31) {
+    const btn = document.getElementById("insertBtn");
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.style.cursor = "pointer";
+  }if (heap.length <= 0) {
+    document.getElementById("popMinBtn").disabled = true;
+    document.getElementById("popMinBtn").style.opacity = "0.5";
+    document.getElementById("popMinBtn").style.cursor = "not-allowed";
+    document.getElementById("popMaxBtn").disabled = true;
+    document.getElementById("popMaxBtn").style.opacity = "0.5";
+    document.getElementById("popMaxBtn").style.cursor = "not-allowed";
+  }
 }
 
 function render() {
-    const display = document.getElementById("heapDisplay");
-    const svg = document.getElementById("connectorSVG");
-    display.innerHTML = "";
-    svg.innerHTML = "";
-  
-    
-    let level = 0;
-    let index = 0;
-    const nodePositions = [];
-  
-    while (index < heap.length) {
-      const count = Math.pow(2, level);
-      const levelDiv = document.createElement("div");
-      levelDiv.className = "level";
-  
-      for (let i = 0; i < count && index < heap.length; i++) {
-        const node = document.createElement("div");
-        node.className = "node";
-        node.textContent = heap[index];
-        node.dataset.index = index;
-  
-        levelDiv.appendChild(node);
-        index++;
-      }
-  
-      display.appendChild(levelDiv);
-      level++;
+  const display = document.getElementById("heapDisplay");
+  const svg = document.getElementById("connectorSVG");
+  display.innerHTML = "";
+  svg.innerHTML = "";
+
+  const nodeElements = [];
+  let level = 0;
+  let index = 0;
+
+  while (index < heap.length) {
+    const count = Math.pow(2, level);
+
+    const levelDiv = document.createElement("div");
+    levelDiv.className = "level";
+    levelDiv.style.top = `${level * 100 - 10}px`;
+    display.appendChild(levelDiv);
+
+    for (let i = 0; i < count && index < heap.length; i++) {
+      const node = document.createElement("div");
+      node.className = "node";
+      node.textContent = heap[index];
+      node.dataset.index = index;
+      display.appendChild(node); 
+
+      nodeElements.push({
+        el: node,
+        level: level,
+        positionInLevel: i,
+      });
+
+      index++;
     }
 
-    requestAnimationFrame(() => {
-      const nodes = document.querySelectorAll(".node");
-      const positions = [];
-  
-      nodes.forEach(node => {
-        const rect = node.getBoundingClientRect();
-        const parentRect = display.getBoundingClientRect();
-        positions.push({
-          x: rect.left + rect.width / 2 - parentRect.left,
-          y: rect.top + rect.height / 2 - parentRect.top,
-        });
-      });
-  
-      for (let i = 0; i < positions.length; i++) {
-        const parentIndex = Math.floor((i - 1) / 2);
-        if (parentIndex >= 0) {
-          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-          line.setAttribute("x1", positions[parentIndex].x);
-          line.setAttribute("y1", positions[parentIndex].y);
-          line.setAttribute("x2", positions[i].x);
-          line.setAttribute("y2", positions[i].y);
-          line.setAttribute("stroke", "#94a3b8");
-          line.setAttribute("stroke-width", "2");
-          svg.appendChild(line);
-        }
-      }
-    });
+    level++;
   }
-  
+
+  requestAnimationFrame(() => {
+    const displayRect = display.getBoundingClientRect();
+    const svgRect = svg.getBoundingClientRect();
+    const spacingY = 100;
+
+    const positions = [];
+
+    nodeElements.forEach(({ el, level, positionInLevel }, idx) => {
+      const nodeWidth = el.offsetWidth;
+      const nodeHeight = el.offsetHeight;
+
+      const parts = Math.pow(2, level) + 1;
+      const spacingX = displayRect.width / parts;
+
+      const x = (positionInLevel + 1) * spacingX;
+      const y = level * spacingY + 40;
+
+      positions[idx] = { x, y };
+
+      el.style.left = `${x - nodeWidth}px`;
+      el.style.top = `${y - nodeHeight}px`;
+    });
+
+    for (let i = 1; i < heap.length; i++) {
+      const parentIndex = Math.floor((i - 1) / 2);
+      const child = positions[i];
+      const parent = positions[parentIndex];
+
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", parent.x); 
+      line.setAttribute("y1", parent.y); 
+      line.setAttribute("x2", child.x); 
+      line.setAttribute("y2", child.y);   
+      svg.appendChild(line);
+    }
+  });
+}

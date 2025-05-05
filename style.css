@@ -27,7 +27,6 @@ h1 {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin: 2rem 0;
   background: rgba(255, 255, 255, 0.6); 
   border: 2px solid #f8b0c5; 
@@ -102,17 +101,19 @@ button:active {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .level {
-  display: flex;
-  justify-content: space-around;
-  position: relative;
-  margin: 1rem 0;
-  width: calc(100% * (1 + 0.5 * attr(data-level number, 0)));
-  max-width: 100%;
-  flex-wrap: nowrap;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50px;
   background: linear-gradient(145deg, rgba(248, 176, 197, 0.2), rgba(248, 176, 197, 0.1));
-  padding: 0.5rem;
   border-radius: 5px;
+  z-index: 0;
 }
 
 .node {
@@ -125,7 +126,7 @@ button:active {
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   animation: popIn 0.3s ease-out;
-  position: relative;
+  position: absolute;
   z-index: 1;
   color: #333;
   font-weight: bold;
