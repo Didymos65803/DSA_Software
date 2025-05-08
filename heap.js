@@ -150,18 +150,50 @@ function insert(value) {
 }
 
 // Remove and return the top element (root)
-function remove() {
+function popMin() {
   if (heapSize === 0) {
     console.log("No elements in the heap");
     return;
   }
 
-  const root = heap[1];
+  const minValue = heap[1];
   heap[1] = heap[heapSize];
   heapSize--;
-  pushDown(1);
 
-  return root;
+  if(heapSize > 1){
+    pushDown(1);
+  }
+  return minValue;
+}
+
+function popMax(){
+    if (heapSize == 0){
+        console.log("No elements in the heap");
+        return;
+    }
+    else if (heapSize == 1){
+        let maxValue = heap[1];
+        heapSize--;
+    }
+    else if(heapSize == 2){
+        let maxValue = heap[2];
+        heapSize--;
+    }
+    else{
+        let maxIndex;
+        if(heap[2] >= heap[3]){
+            maxIndex = 2;
+        }
+        else{
+            maxIndex = 3;
+        }
+        h[maxIndex] = h[heapSize];
+        heapSize--;
+        if(heapSize > maxIndex){
+            pushDown(maxIndex);
+        }
+    }
+    return maxIndex;
 }
 
 // Get the current heap (for debugging)
