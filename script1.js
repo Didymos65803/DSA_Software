@@ -142,10 +142,11 @@ async function insert() {
     const input = document.getElementById("input");
     const val = parseInt(input.value);
     if (isNaN(val) || val < 1 || val > 100000) return;
-
+    
     // Optional: Limit heap size to prevent performance issues
     if (heap.length >= 127) return; // 6 levels max
-
+    
+    setButtonsEnabled(false);
     heap.push(val);
     render();
     const nodes = document.querySelectorAll('.node');
@@ -157,12 +158,14 @@ async function insert() {
 
     await bubbleUp(heap.length - 1);
     input.value = "";
+    setButtonsEnabled(true);
     updateButtons();
 }
 
 async function popMin() {
     if (heap.length === 0) return;
 
+    setButtonsEnabled(false);
     const nodes = document.querySelectorAll('.node');
     const minNode = Array.from(nodes).find(node => node.dataset.index == 0);
     if (minNode) {
@@ -177,12 +180,14 @@ async function popMin() {
         await sinkDownMin(0);
     }
     render();
+    setButtonsEnabled(true);
     updateButtons();
 }
 
 async function popMax() {
     if (heap.length === 0) return;
 
+    setButtonsEnabled(false);
     if (heap.length === 1) {
         const nodes = document.querySelectorAll('.node');
         const maxNode = Array.from(nodes).find(node => node.dataset.index == 0);
@@ -209,6 +214,7 @@ async function popMax() {
         }
     }
     render();
+    setButtonsEnabled(true);
     updateButtons();
 }
 
@@ -227,6 +233,15 @@ function updateButtons() {
     document.getElementById("popMaxBtn").disabled = !state;
     document.getElementById("popMaxBtn").style.opacity = state ? "1" : "0.5";
     document.getElementById("popMaxBtn").style.cursor = state ? "pointer" : "not-allowed";
+}
+
+function setButtonsEnabled(enabled) {
+    const buttons = ["insertBtn", "popMinBtn", "popMaxBtn"].map(id => document.getElementById(id));
+    buttons.forEach(btn => {
+        btn.disabled = !enabled;
+        btn.style.cursor = enabled ? "pointer" : "not-allowed";
+        btn.style.opacity = enabled ? "1" : "0.5";
+    });
 }
 
 function render() {
