@@ -140,6 +140,13 @@ button:disabled {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
+.swap-highlight {
+  background-color: #ffd54f !important;
+  border-color: #ffb300 !important;
+  box-shadow: 0 0 12px rgba(255, 179, 0, 0.8);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
 .node.min-node {
   background: linear-gradient(145deg, #a5d6a7, #81c784); 
   color: white;
