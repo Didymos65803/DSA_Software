@@ -10,31 +10,24 @@ function isMinLevel(i) {
 }
 
 async function swapNodes(i, j) {
-    // Find nodes by dataset.index
     const nodes = document.querySelectorAll('.node');
     const nodeI = Array.from(nodes).find(node => node.dataset.index == i);
     const nodeJ = Array.from(nodes).find(node => node.dataset.index == j);
 
     if (!nodeI || !nodeJ) return; // Safeguard against missing nodes
 
-    // Highlight nodes before swap
     nodeI.classList.add('swap-highlight');
     nodeJ.classList.add('swap-highlight');
-    await new Promise(resolve => setTimeout(resolve, 500)); // Wait 0.5s
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    // Perform swap in heap
     [heap[i], heap[j]] = [heap[j], heap[i]];
-
-    // Update node text and indices
     nodeI.textContent = heap[i];
     nodeJ.textContent = heap[j];
     nodeI.dataset.index = i;
     nodeJ.dataset.index = j;
 
-    // Re-render to update positions
     render();
 
-    // Keep highlight briefly
     await new Promise(resolve => setTimeout(resolve, 500));
     nodeI.classList.remove('swap-highlight');
     nodeJ.classList.remove('swap-highlight');
@@ -148,18 +141,20 @@ async function sinkDown(i) {
 async function insert() {
     const input = document.getElementById("input");
     const val = parseInt(input.value);
-    if (isNaN(val) || val < 1 || val > 100) return;
-    if (heap.length >= 31) return;
-    
+    if (isNaN(val) || val < 1 || val > 100000) return;
+
+    // Optional: Limit heap size to prevent performance issues
+    if (heap.length >= 127) return; // 6 levels max
+
     heap.push(val);
-    render(); // Render to show the new node immediately
+    render();
     const nodes = document.querySelectorAll('.node');
     const newNode = Array.from(nodes).find(node => node.dataset.index == heap.length - 1);
     if (newNode) {
         newNode.classList.add('new-node');
         setTimeout(() => newNode.classList.remove('new-node'), 1000);
     }
-    
+
     await bubbleUp(heap.length - 1);
     input.value = "";
     updateButtons();
@@ -167,17 +162,15 @@ async function insert() {
 
 async function popMin() {
     if (heap.length === 0) return;
-    
-    // Highlight the node to be popped
+
     const nodes = document.querySelectorAll('.node');
     const minNode = Array.from(nodes).find(node => node.dataset.index == 0);
     if (minNode) {
         minNode.classList.add('pre-pop');
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1s for highlight
-        minNode.classList.remove('pre-pop'); // Remove highlight before proceeding
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        minNode.classList.remove('pre-pop');
     }
-    
-    // Perform pop operation
+
     const last = heap.pop();
     if (heap.length > 0) {
         heap[0] = last;
@@ -189,9 +182,8 @@ async function popMin() {
 
 async function popMax() {
     if (heap.length === 0) return;
-    
+
     if (heap.length === 1) {
-        // Highlight the only node
         const nodes = document.querySelectorAll('.node');
         const maxNode = Array.from(nodes).find(node => node.dataset.index == 0);
         if (maxNode) {
@@ -201,7 +193,6 @@ async function popMax() {
         }
         heap.pop();
     } else {
-        // Find max node (index 1 or 2)
         let maxIndex = 1;
         if (heap.length > 2 && heap[2] > heap[1]) maxIndex = 2;
         const nodes = document.querySelectorAll('.node');
@@ -211,7 +202,6 @@ async function popMax() {
             await new Promise(resolve => setTimeout(resolve, 1000));
             maxNode.classList.remove('pre-pop');
         }
-        // Perform pop operation
         const last = heap.pop();
         if (maxIndex < heap.length) {
             heap[maxIndex] = last;
@@ -223,9 +213,11 @@ async function popMax() {
 }
 
 function updateButtons() {
-    document.getElementById("insertBtn").disabled = heap.length >= 31;
-    document.getElementById("insertBtn").style.opacity = heap.length >= 31 ? "0.5" : "1";
-    document.getElementById("insertBtn").style.cursor = heap.length >= 31 ? "not-allowed" : "pointer";
+    // Limit heap size to 127 nodes
+    const isFull = heap.length >= 127;
+    document.getElementById("insertBtn").disabled = isFull;
+    document.getElementById("insertBtn").style.opacity = isFull ? "0.5" : "1";
+    document.getElementById("insertBtn").style.cursor = isFull ? "not-allowed" : "pointer";
 
     const state = heap.length > 0;
     document.getElementById("popMinBtn").disabled = !state;

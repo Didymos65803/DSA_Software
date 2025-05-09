@@ -23,7 +23,7 @@ h1 {
 .tree {
   text-align: center;
   position: relative;
-  min-height: 500px;
+  min-height: 800px; /* Increased to accommodate larger heaps */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -254,7 +254,7 @@ line {
 
 @media (max-width: 768px) {
   .tree {
-    min-height: 400px;
+    min-height: 600px; /* Adjusted for smaller screens */
   }
   
   .node {
