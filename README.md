@@ -12,23 +12,23 @@ Website: https://didymos65803.github.io/DSA_Software/
 ### Insert
 To insert a new number into the heap, enter the value in the input field and click the **Insert** button. The new node will appear in the tree, and the visualization will animate its proper placement in the Min-Max Heap 
 
-![Screenshot 2025-05-11 at 1.19.47 AM](https://hackmd.io/_uploads/ry5So-aelg.jpg)
-![Screenshot 2025-05-11 at 1.20.46 AM](https://hackmd.io/_uploads/HJ9BsWpeee.jpg)
+![Insert-1](https://imgur.com/a/FiHAiAl)
+![Insert-2](https://imgur.com/a/VyyzaAL)
 
 ### Pop Min
  
-Click the Pop Min button to delete the smallest element (root) from the heap. The visualizer will highlight the root, remove it, and then promote the appropriate child to root, animating the heapify down process on min-levels to restore the Min-Max order. 
+Click the Pop Min button to delete the smallest element (root) from the heap. The visualizer will highlight the root(Red), remove it, and then promote the appropriate child to root, animating the heapify down process on min-levels to restore the Min-Max order. 
 
-![Screenshot 2025-05-11 at 1.26.19 AM Large](https://hackmd.io/_uploads/ByKph-pegx.jpg)
-![Screenshot 2025-05-11 at 1.27.28 AM Large](https://hackmd.io/_uploads/BkFTn-Tgex.jpg)
+![PopMin-1](https://imgur.com/a/Bgs2SjA)
+![PopMin-2](https://imgur.com/a/cpwiBm4)
 
 
 
 ### Pop Maximum: 
-Click the Pop Max button to remove the largest element. The visualizer will identify the current maximum (one of the root’s children on the first max level), remove it, and then reheapify down on a max-level to maintain the structure. 
+Click the Pop Max button to remove the largest element. The visualizer will identify the current maximum (one of the root’s children on the first max level, showing red node), remove it, and then reheapify down on a max-level to maintain the structure. 
 
-![Screenshot 2025-05-11 at 1.29.59 AM](https://hackmd.io/_uploads/SylrabTxxl.jpg)
-![Screenshot 2025-05-11 at 1.30.06 AM](https://hackmd.io/_uploads/S1lra-6lex.jpg)
+![PopMax-1](https://imgur.com/a/h6GMjOO)
+![PopMax-2](https://imgur.com/a/RWV2wvx)
 
 
 ### Constraint
