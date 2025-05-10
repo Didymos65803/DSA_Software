@@ -174,7 +174,13 @@ async function popMin() {
         minNode.classList.remove('pre-pop');
     }
 
-    const last = heap.pop();
+    const lastIndex = heap.length - 1;
+    const last = heap[lastIndex];
+    if (heap.length > 1) {
+        await swapNodes(0, lastIndex);
+    }
+    heap.pop();
+    render();
     if (heap.length > 0) {
         heap[0] = last;
         await sinkDownMin(0);
@@ -207,7 +213,13 @@ async function popMax() {
             await new Promise(resolve => setTimeout(resolve, 1000));
             maxNode.classList.remove('pre-pop');
         }
-        const last = heap.pop();
+        const lastIndex = heap.length - 1;
+        const last = heap[lastIndex];
+        if (maxIndex < heap.length - 1) {
+            await swapNodes(maxIndex, lastIndex);
+        }
+        heap.pop();
+        render();
         if (maxIndex < heap.length) {
             heap[maxIndex] = last;
             await sinkDown(maxIndex);
