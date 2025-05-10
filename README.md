@@ -12,23 +12,23 @@ Website: https://didymos65803.github.io/DSA_Software/
 ### Insert
 To insert a new number into the heap, enter the value in the input field and click the **Insert** button. The new node will appear in the tree, and the visualization will animate its proper placement in the Min-Max Heap 
 
-![Insert-1](https://imgur.com/a/FiHAiAl)
-![Insert-2](https://imgur.com/a/VyyzaAL)
+![Insert-1](Insert1.png)
+![Insert-2](Insert2.png)
 
 ### Pop Min
  
 Click the Pop Min button to delete the smallest element (root) from the heap. The visualizer will highlight the root(Red), remove it, and then promote the appropriate child to root, animating the heapify down process on min-levels to restore the Min-Max order. 
 
-![PopMin-1](https://imgur.com/a/Bgs2SjA)
-![PopMin-2](https://imgur.com/a/cpwiBm4)
+![PopMin-1](PopMin1.png)
+![PopMin-2](PopMin2.png)
 
 
 
 ### Pop Maximum: 
 Click the Pop Max button to remove the largest element. The visualizer will identify the current maximum (one of the root’s children on the first max level, showing red node), remove it, and then reheapify down on a max-level to maintain the structure. 
 
-![PopMax-1](https://imgur.com/a/h6GMjOO)
-![PopMax-2](https://imgur.com/a/RWV2wvx)
+![PopMax-1](PopMax1.png)
+![PopMax-2](PopMax2.png)
 
 
 ### Constraint
