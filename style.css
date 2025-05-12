@@ -52,11 +52,23 @@ h1 {
   z-index: 10;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
+  max-width: 475px;
 }
 
 .controls:hover {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
   transform: translateX(-50%) scale(1.02);
+}
+
+.controls-note {
+  color: gray;
+  font-size: 0.9em;
+  font-style: normal;
+  margin-top: 10px;
+  text-align: center;
+  clear: both;
+  width: 100%;
+  margin: 0;
 }
 
 input[type=number] {
